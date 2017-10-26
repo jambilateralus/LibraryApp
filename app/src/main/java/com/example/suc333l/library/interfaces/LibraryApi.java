@@ -14,7 +14,7 @@ import retrofit2.http.POST;
  * Created by suc333l on 10/14/17.
  */
 
-public interface LibraryAPi {
+public interface LibraryApi {
 
     @POST("api-token-auth/")
     Call<TokenResponse> getToken(@Body TokenRequest tokenRequest);

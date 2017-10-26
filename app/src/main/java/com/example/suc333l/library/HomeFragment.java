@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.suc333l.library.interfaces.LibraryAPi;
+import com.example.suc333l.library.interfaces.LibraryApi;
 import com.example.suc333l.library.models.MemberInfo;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -26,9 +26,8 @@ import static android.content.Context.MODE_PRIVATE;
 public class HomeFragment extends Fragment {
 
     // Retrofit
-    private LibraryAPi service;
+    private LibraryApi service;
     private Call<JsonArray> memberInfoResponseCall;
-    private  String token;
 
     //Ui components
     TextView memberName;
@@ -44,12 +43,8 @@ public class HomeFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        service = retrofit.create(LibraryAPi.class);
+        service = retrofit.create(LibraryApi.class);
         attemptToFetchMemberInfo();
-
-        // Extract token from Shared preferences.
-        SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.login_data), MODE_PRIVATE);
-        token = prefs.getString("token","");
 
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.fragment_home, parent, false);
@@ -69,20 +64,32 @@ public class HomeFragment extends Fragment {
     private void attemptToFetchMemberInfo() {
         final Gson gson = new Gson();
 
+        // Extract token from Shared preferences.
+        SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.login_data), MODE_PRIVATE);
+        String token = prefs.getString("token", "");
+
         memberInfoResponseCall = service.getMemberInfo(token);
         memberInfoResponseCall.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                JsonArray memberInfoArray = response.body();
-                MemberInfo memberInfo = gson.fromJson(memberInfoArray.get(0), MemberInfo.class);
-                String member_name = memberInfo.getFirst_name()+" "+memberInfo.getLast_name();
-                String registered_year = memberInfo.getRegistered_year();
+                int statusCode = response.code();
 
-                //Set text to ui
-                memberName.setText(member_name);
-                registeredYear.setText(registered_year);
+                //If response is ok
+                if (statusCode == 200) {
+                    //Extract user info from response.
+                    JsonArray memberInfoArray = response.body();
+                    MemberInfo memberInfo = gson.fromJson(memberInfoArray.get(0), MemberInfo.class);
+                    String member_name = memberInfo.getFirst_name() + " " + memberInfo.getLast_name();
+                    String registered_year = memberInfo.getRegistered_year();
 
-                Toast.makeText(getContext(), ""+memberInfo.getFirst_name(), Toast.LENGTH_SHORT).show();
+                    //Set text to ui
+                    memberName.setText(member_name);
+                    registeredYear.setText(registered_year);
+
+                    Toast.makeText(getContext(), "" + memberInfo.getFirst_name(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "" + statusCode, Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

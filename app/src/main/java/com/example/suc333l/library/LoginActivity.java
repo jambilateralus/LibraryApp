@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.suc333l.library.interfaces.LibraryAPi;
+import com.example.suc333l.library.interfaces.LibraryApi;
 import com.example.suc333l.library.models.TokenRequest;
 import com.example.suc333l.library.models.TokenResponse;
 
@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     // UI references.
     private AutoCompleteTextView mMemberIdView;
     private EditText mPasswordView;
-    private LibraryAPi service;
+    private LibraryApi service;
     Call<TokenResponse> tokenResponseCall;
 
 
@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        service = retrofit.create(LibraryAPi.class);
+        service = retrofit.create(LibraryApi.class);
     }
 
 

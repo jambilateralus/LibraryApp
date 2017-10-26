@@ -1,7 +1,7 @@
 package com.example.suc333l.library.services;
 
 import com.example.suc333l.library.R;
-import com.example.suc333l.library.interfaces.LibraryAPi;
+import com.example.suc333l.library.interfaces.LibraryApi;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class LibraryApiService {
-    private LibraryAPi service;
+    private LibraryApi service;
     private Retrofit retrofit;
 
     public LibraryApiService(){
@@ -21,6 +21,5 @@ public class LibraryApiService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        service = retrofit.create(LibraryAPi.class);
     }
 }
