@@ -8,15 +8,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.suc333l.library.adapters.CategoryListAdapter;
+import com.example.suc333l.library.adapters.BookListAdapter;
 import com.example.suc333l.library.interfaces.LibraryApi;
-import com.example.suc333l.library.models.Category;
+import com.example.suc333l.library.models.Book;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
@@ -35,19 +34,19 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BooksFragment extends Fragment {
+public class BookListFragment extends Fragment {
 
     //For ui
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
-    private CategoryListAdapter adapter;
-    private List<Category> category_list;
+    private BookListAdapter adapter;
+    private List<Book> book_list;
 
     //For retrofit
     private LibraryApi service;
-    private Call<JsonArray> categoryListResponseCall;
+    private Call<JsonArray> bookListResponseCall;
 
-    public BooksFragment() {
+    public BookListFragment() {
         // Required empty public constructor
     }
 
@@ -62,59 +61,60 @@ public class BooksFragment extends Fragment {
                 .build();
 
         service = retrofit.create(LibraryApi.class);
-        attemptToFetchCategoryList();
 
-
+        int categoryId;
+        Bundle bundle = this.getArguments();
+        categoryId = bundle.getInt("categoryId");
+        Toast.makeText(getContext(), "" + categoryId, Toast.LENGTH_SHORT).show();
+        attemptToFetchBookList(categoryId);
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_books, container, false);
+        return inflater.inflate(R.layout.fragment_book_list, container, false);
     }
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
         // Set recycler view
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        category_list = new ArrayList<>();
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_booklist);
+        book_list = new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new CategoryListAdapter(getActivity(), category_list, this);
+        adapter = new BookListAdapter(getActivity(), book_list);
         recyclerView.setAdapter(adapter);
 
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void attemptToFetchCategoryList() {
+    private void attemptToFetchBookList(int categoryId) {
         // Setup  progress dialog.
         final ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading");
+
         // Show progress dialog
         progressDialog.show();
 
         final Gson gson = new Gson();
+
         // Extract token from Shared preferences.
-        final SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.login_data), MODE_PRIVATE);
-        String token = prefs.getString("token","");
+        SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.login_data), MODE_PRIVATE);
+        String token = prefs.getString("token", "");
 
-
-        categoryListResponseCall = service.getCategoryList(token);
-        categoryListResponseCall.enqueue(new Callback<JsonArray>() {
+        bookListResponseCall = service.getBooksOfCategory(token, categoryId);
+        bookListResponseCall.enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 progressDialog.hide();
                 int statusCode = response.code();
                 if (statusCode == 200) {
-                    JsonArray categoryArray = response.body();
-                    // category_list.add(new Category(0, "All"));
-                    for (int i = 0; i < categoryArray.size(); i++) {
-                        Category category = gson.fromJson(categoryArray.get(i), Category.class);
-                        category_list.add(category);
+                    JsonArray bookArray = response.body();
+                    for (int i = 0; i < bookArray.size(); i++) {
+                        Book book = gson.fromJson(bookArray.get(i), Book.class);
+                        book_list.add(book);
                     }
                 }
                 adapter.notifyDataSetChanged();
-
                 Toast.makeText(getContext(), "" + statusCode, Toast.LENGTH_SHORT).show();
-                Log.d("Attempt to fetch ", "onResponse: "+response.raw());
 
             }
 
@@ -124,16 +124,4 @@ public class BooksFragment extends Fragment {
             }
         });
     }
-
-    @Override
-    public void onPause() {
-        categoryListResponseCall.cancel();
-        super.onPause();
-    }
-
-    public List<Category> getCategoryList() {
-        return this.category_list;
-    }
-
-
 }

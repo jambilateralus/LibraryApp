@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private class FragmentSwitcher {
+
         private FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
         void switchToHomeFragment() {
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             FragmentSwitcher fragmentSwitcher = new FragmentSwitcher();
+
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     fragmentSwitcher.switchToHomeFragment();
@@ -96,6 +98,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 
 }

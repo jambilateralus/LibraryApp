@@ -22,7 +22,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="base_url">http://16f6bbed.ngrok.io</string>
+    <string name="base_url">http://1873a9da.ngrok.io</string>
     <string name="login_data">LoginData</string>
     <string name="title_RequestBooks">Request Book</string>
     <string name="title_Books">Books</string>

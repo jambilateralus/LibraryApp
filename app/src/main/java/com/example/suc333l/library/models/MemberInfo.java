@@ -18,7 +18,7 @@ public class MemberInfo {
     }
 
     public String getRegistered_year() {
-        return registered_year.substring(0,4);
+        return registered_year.substring(0, 4);
     }
 
 }

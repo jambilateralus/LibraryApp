@@ -7,7 +7,7 @@ package com.example.suc333l.library.models;
 public class TokenRequest {
 
     private String username;
-    private  String password;
+    private String password;
 
     public String getUserName() {
         return username;
