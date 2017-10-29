@@ -4,9 +4,4 @@
     android:layout_height="match_parent"
     tools:context="com.example.suc333l.library.RequestBookFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Request Book Fragment" />
-
 </FrameLayout>

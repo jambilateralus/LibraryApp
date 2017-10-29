@@ -1,5 +1,6 @@
 package com.example.suc333l.library.interfaces;
 
+import com.example.suc333l.library.models.ReserveBookResponse;
 import com.example.suc333l.library.models.TokenRequest;
 import com.example.suc333l.library.models.TokenResponse;
 import com.google.gson.JsonArray;
@@ -33,6 +34,10 @@ public interface LibraryApi {
     //search book
     @GET("books/")
     Call<JsonArray> getBookList(@Header("Authorization") String token, @Query("search") String search);
+
+    //reserve book
+    @GET("reserve_book/{book_pk}")
+    Call<ReserveBookResponse> reserveBook(@Header("Authorization") String token, @Path("book_pk") int book_pk);
 
     @GET("category/{category_id}/book_list")
     Call<JsonArray> getBooksOfCategory(@Header("Authorization") String token, @Path("category_id") int categoryId);
