@@ -63,10 +63,16 @@ public class BookListFragment extends Fragment {
         service = retrofit.create(LibraryApi.class);
 
         int categoryId;
+        String queryText;
         Bundle bundle = this.getArguments();
-        categoryId = bundle.getInt("categoryId");
+        categoryId = bundle.getInt("categoryId", 0);
+        queryText = bundle.getString("searchText");
         Toast.makeText(getContext(), "" + categoryId, Toast.LENGTH_SHORT).show();
-        attemptToFetchBookList(categoryId);
+
+        if (categoryId != 0)
+            attemptToFetchBookList(categoryId);
+        else
+            attemptToSearchBookList(queryText);
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_book_list, container, false);
@@ -113,6 +119,7 @@ public class BookListFragment extends Fragment {
                         book_list.add(book);
                     }
                 }
+                // Update recycler view
                 adapter.notifyDataSetChanged();
                 Toast.makeText(getContext(), "" + statusCode, Toast.LENGTH_SHORT).show();
 
@@ -124,4 +131,48 @@ public class BookListFragment extends Fragment {
             }
         });
     }
+
+
+    private void attemptToSearchBookList(String searchText) {
+        // Setup  progress dialog.
+        final ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Searching..");
+
+        // Show progress dialog
+        progressDialog.show();
+
+        final Gson gson = new Gson();
+
+        // Extract token from Shared preferences.
+        final SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.login_data), MODE_PRIVATE);
+        String token = prefs.getString("token", "");
+
+        bookListResponseCall = service.getBookList(token, searchText);
+        bookListResponseCall.enqueue(new Callback<JsonArray>() {
+            @Override
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                progressDialog.hide();
+                int statusCode = response.code();
+                if (statusCode == 200) {
+                    JsonArray bookArray = response.body();
+                    for (int i = 0; i < bookArray.size(); i++) {
+                        Book book = gson.fromJson(bookArray.get(i), Book.class);
+                        book_list.add(book);
+                    }
+                }
+                // Update recycler view
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+                progressDialog.hide();
+
+            }
+        });
+
+    }
+
+
 }

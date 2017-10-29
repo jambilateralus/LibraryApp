@@ -10,6 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by suc333l on 10/14/17.
@@ -29,6 +30,9 @@ public interface LibraryApi {
     @GET("category/")
     Call<JsonArray> getCategoryList(@Header("Authorization") String token);
 
+    //search book
+    @GET("books/")
+    Call<JsonArray> getBookList(@Header("Authorization") String token, @Query("search") String search);
 
     @GET("category/{category_id}/book_list")
     Call<JsonArray> getBooksOfCategory(@Header("Authorization") String token, @Path("category_id") int categoryId);
