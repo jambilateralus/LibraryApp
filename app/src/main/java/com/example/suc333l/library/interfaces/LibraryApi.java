@@ -23,8 +23,12 @@ public interface LibraryApi {
     @GET("member-info/")
     Call<JsonArray> getMemberInfo(@Header("Authorization") String token);
 
+    @GET("burrowed_book/")
+    Call<JsonArray> getBurrowedBooks(@Header("Authorization") String token);
+
     @GET("category/")
     Call<JsonArray> getCategoryList(@Header("Authorization") String token);
+
 
     @GET("category/{category_id}/book_list")
     Call<JsonArray> getBooksOfCategory(@Header("Authorization") String token, @Path("category_id") int categoryId);

@@ -6,10 +6,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -55,6 +60,9 @@ public class BooksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Enable option menu
+        setHasOptionsMenu(true);
+
         // Setup retrofit
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.base_url))
@@ -63,7 +71,6 @@ public class BooksFragment extends Fragment {
 
         service = retrofit.create(LibraryApi.class);
         attemptToFetchCategoryList();
-
 
 
         // Inflate the layout for this fragment
@@ -94,8 +101,7 @@ public class BooksFragment extends Fragment {
         final Gson gson = new Gson();
         // Extract token from Shared preferences.
         final SharedPreferences prefs = getActivity().getSharedPreferences(getString(R.string.login_data), MODE_PRIVATE);
-        String token = prefs.getString("token","");
-
+        String token = prefs.getString("token", "");
 
         categoryListResponseCall = service.getCategoryList(token);
         categoryListResponseCall.enqueue(new Callback<JsonArray>() {
@@ -114,7 +120,7 @@ public class BooksFragment extends Fragment {
                 adapter.notifyDataSetChanged();
 
                 Toast.makeText(getContext(), "" + statusCode, Toast.LENGTH_SHORT).show();
-                Log.d("Attempt to fetch ", "onResponse: "+response.raw());
+                Log.d("Attempt to fetch ", "onResponse: " + response.raw());
 
             }
 
@@ -124,6 +130,37 @@ public class BooksFragment extends Fragment {
             }
         });
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.search, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = new SearchView(((MainActivity) getContext()).getSupportActionBar().getThemedContext());
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        MenuItemCompat.setActionView(item, searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        searchView.setOnClickListener(new View.OnClickListener() {
+                                          @Override
+                                          public void onClick(View v) {
+
+                                          }
+                                      }
+        );
+    }
+
 
     @Override
     public void onPause() {

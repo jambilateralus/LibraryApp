@@ -1,11 +1,14 @@
 package com.example.suc333l.library.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.suc333l.library.R;
 import com.example.suc333l.library.models.Author;
@@ -74,6 +77,37 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
             authorName = (TextView) itemView.findViewById(R.id.book_author);
             publisherName = (TextView) itemView.findViewById(R.id.book_publisher);
             bookCount = (TextView) itemView.findViewById(R.id.book_count);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Long press to make reservation.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    //open dialog
+                    AlertDialog.Builder builder;
+                    builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Reserve Book")
+                            .setMessage("Are you sure you want to reserve this book?")
+                            .setIcon(null)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // continue with delete
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                }
+                            })
+                            .show();
+                    return true;
+                }
+            });
 
         }
     }
