@@ -135,7 +135,6 @@ public class BooksFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
         inflater.inflate(R.menu.search, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         final SearchView searchView = new SearchView(((MainActivity) getContext()).getSupportActionBar().getThemedContext());

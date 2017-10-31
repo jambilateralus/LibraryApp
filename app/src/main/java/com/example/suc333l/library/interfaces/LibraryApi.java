@@ -1,9 +1,11 @@
 package com.example.suc333l.library.interfaces;
 
+import com.example.suc333l.library.models.BookRequest;
 import com.example.suc333l.library.models.ReserveBookResponse;
 import com.example.suc333l.library.models.TokenRequest;
 import com.example.suc333l.library.models.TokenResponse;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -22,12 +24,11 @@ public interface LibraryApi {
     @POST("api-token-auth/")
     Call<TokenResponse> getToken(@Body TokenRequest tokenRequest);
 
+    //get member information
     @GET("member-info/")
     Call<JsonArray> getMemberInfo(@Header("Authorization") String token);
 
-    @GET("burrowed_book/")
-    Call<JsonArray> getBurrowedBooks(@Header("Authorization") String token);
-
+    //get a list of all categories
     @GET("category/")
     Call<JsonArray> getCategoryList(@Header("Authorization") String token);
 
@@ -39,6 +40,11 @@ public interface LibraryApi {
     @GET("reserve_book/{book_pk}")
     Call<ReserveBookResponse> reserveBook(@Header("Authorization") String token, @Path("book_pk") int book_pk);
 
+    //request new book
+    @POST("request_new_book/")
+    Call<JsonElement> requestNewBook(@Header("Authorization") String token, @Body BookRequest bookRequest);
+
+    //get books of given category
     @GET("category/{category_id}/book_list")
     Call<JsonArray> getBooksOfCategory(@Header("Authorization") String token, @Path("category_id") int categoryId);
 
