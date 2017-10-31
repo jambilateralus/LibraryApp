@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.suc333l.library.BookListFragment;
 import com.example.suc333l.library.BooksFragment;
@@ -63,7 +62,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "You clicked on item " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(context, "You clicked on item " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
                     // Open Book list fragment for clicked category.
                     int categoryId = booksFragment.getCategoryList().get(getAdapterPosition()).getPk();
                     startBookListFragment(context, categoryId);

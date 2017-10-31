@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.suc333l.library.adapters.BookListAdapter;
 import com.example.suc333l.library.interfaces.LibraryApi;
@@ -67,7 +66,7 @@ public class BookListFragment extends Fragment {
         Bundle bundle = this.getArguments();
         categoryId = bundle.getInt("categoryId", 0);
         queryText = bundle.getString("searchText");
-        Toast.makeText(getContext(), "" + categoryId, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getContext(), "" + categoryId, Toast.LENGTH_SHORT).show();
 
         if (categoryId != 0)
             attemptToFetchBookList(categoryId);
@@ -121,7 +120,7 @@ public class BookListFragment extends Fragment {
                 }
                 // Update recycler view
                 adapter.notifyDataSetChanged();
-                Toast.makeText(getContext(), "" + statusCode, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), "" + statusCode, Toast.LENGTH_SHORT).show();
 
             }
 

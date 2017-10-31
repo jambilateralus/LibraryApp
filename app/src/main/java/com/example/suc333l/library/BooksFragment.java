@@ -18,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.suc333l.library.adapters.CategoryListAdapter;
 import com.example.suc333l.library.interfaces.LibraryApi;
@@ -120,7 +119,7 @@ public class BooksFragment extends Fragment {
                 }
                 adapter.notifyDataSetChanged();
 
-                Toast.makeText(getContext(), "" + statusCode, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), "" + statusCode, Toast.LENGTH_SHORT).show();
                 Log.d("Attempt to fetch ", "onResponse: " + response.raw());
 
             }
@@ -156,7 +155,7 @@ public class BooksFragment extends Fragment {
                 bookListFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.fragment, bookListFragment);
                 fragmentTransaction.commit();
-                Toast.makeText(getContext(), "" + searchView.getQuery(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), "" + searchView.getQuery(), Toast.LENGTH_SHORT).show();
                 return false;
             }
 

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.suc333l.library.interfaces.LibraryApi;
 import com.example.suc333l.library.models.MemberInfo;
@@ -86,9 +85,9 @@ public class HomeFragment extends Fragment {
                     memberName.setText(member_name);
                     registeredYear.setText(registered_year);
 
-                    Toast.makeText(getContext(), "" + memberInfo.getFirst_name(), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getContext(), "" + memberInfo.getFirst_name(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "" + statusCode, Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getContext(), "" + statusCode, Toast.LENGTH_SHORT).show();
                 }
             }
 
