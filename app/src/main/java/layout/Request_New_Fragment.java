@@ -8,7 +8,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.suc333l.library.R;
 
@@ -30,13 +29,14 @@ public class Request_New_Fragment extends DialogFragment {
         View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_request__new_, new LinearLayout(getActivity()), false);
 
         // Retrieve layout elements
-        TextView title = (TextView) view.findViewById(R.id.request_new_book);
+        // TextView title = (TextView) view.findViewById(R.id.request_new_book);
 
         // Set values
-        title.setText("Not perfect yet");
+        //title.setText("Not perfect yet");
 
         // Build dialog
         Dialog builder = new Dialog(getActivity());
+        builder.setTitle("Request New Book");
         //builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //builder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         builder.setContentView(view);
