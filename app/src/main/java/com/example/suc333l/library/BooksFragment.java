@@ -172,6 +172,16 @@ public class BooksFragment extends Fragment {
         );
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_reserved_books) {
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment, new ReservedBookListFragment());
+            fragmentTransaction.commit();
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onPause() {
