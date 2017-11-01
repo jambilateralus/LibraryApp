@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.suc333l.library.R;
+import com.example.suc333l.library.RequestBookFragment;
 import com.example.suc333l.library.interfaces.LibraryApi;
 import com.example.suc333l.library.models.BookRequest;
 import com.google.gson.JsonElement;
@@ -61,7 +63,6 @@ public class Request_New_Fragment extends DialogFragment {
                 .build();
 
         service = retrofit.create(LibraryApi.class);
-
 
 
         // Build dialog
@@ -123,8 +124,15 @@ public class Request_New_Fragment extends DialogFragment {
         requestBookResponseCall.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                progressDialog.hide();
                 dismiss();
+
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment, new RequestBookFragment());
+                fragmentTransaction.commit();
+
+                progressDialog.hide();
+
+
                 Toast.makeText(getContext(), "" + response.code(), Toast.LENGTH_SHORT).show();
             }
 
