@@ -140,7 +140,7 @@ public class RequestBookFragment extends Fragment {
 
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
-
+                progressDialog.hide();
             }
         });
 

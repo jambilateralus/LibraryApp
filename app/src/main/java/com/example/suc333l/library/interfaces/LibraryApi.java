@@ -36,9 +36,13 @@ public interface LibraryApi {
     @GET("books/")
     Call<JsonArray> getBookList(@Header("Authorization") String token, @Query("search") String search);
 
-    //reserve book
+    //reserve a book
     @GET("reserve_book/{book_pk}")
     Call<ReserveBookResponse> reserveBook(@Header("Authorization") String token, @Path("book_pk") int book_pk);
+
+    //get a list of reservedBooks
+    @GET("reserved_book/")
+    Call<JsonArray> getReservedBookList(@Header("Authorization") String token);
 
     //request new book
     @POST("request_new_book/")
