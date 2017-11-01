@@ -42,10 +42,10 @@ public class Request_New_Fragment extends DialogFragment {
     private LibraryApi service;
     private Call<JsonElement> requestBookResponseCall;
 
+
     public Request_New_Fragment() {
         // Required empty public constructor
     }
-
 
 
     @NonNull
@@ -82,6 +82,8 @@ public class Request_New_Fragment extends DialogFragment {
             public void onClick(View v) {
                 // Attempt to request book
                 attemptToRequestBook();
+
+
             }
         });
 
@@ -105,6 +107,7 @@ public class Request_New_Fragment extends DialogFragment {
         progressDialog.setMessage("Requesting..");
         // Show progress dialog
         progressDialog.show();
+
 
         // Prepare Book Request Object
         BookRequest bookRequest = new BookRequest();

@@ -44,6 +44,10 @@ public interface LibraryApi {
     @POST("request_new_book/")
     Call<JsonElement> requestNewBook(@Header("Authorization") String token, @Body BookRequest bookRequest);
 
+    //requested book list
+    @GET("request_book/")
+    Call<JsonArray> getRequestedBookList(@Header("Authorization") String token);
+
     //get books of given category
     @GET("category/{category_id}/book_list")
     Call<JsonArray> getBooksOfCategory(@Header("Authorization") String token, @Path("category_id") int categoryId);
